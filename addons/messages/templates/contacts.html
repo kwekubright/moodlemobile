@@ -1,0 +1,28 @@
+<ion-content class="has-tabs" mm-state-class>
+    <ion-refresher pulling-text="{{ 'mm.core.pulltorefresh' | translate }}" ng-if="loaded" on-refresh="refresh()"></ion-refresher>
+
+    <mm-searchbox ng-if="canSearch" submit-action="search" placeholder="{{ 'mma.messages.contactname' | translate }}" initial-value="{{formData.searchString}}" autocorrect="off" spellcheck="false" length-check="2"></mm-searchbox>
+
+    <mm-loading hide-until="loaded" dyn-message="loadingMessage">
+        <ul class="list">
+            <li ng-repeat="contactType in contactTypes" ng-if="contacts[contactType] && (contacts[contactType].length > 0 || contactType === searchType)">
+
+                <ion-item class="item-divider item-button-right">
+                    <span class="item-note">{{ contacts[contactType].length }}</span>
+                    <h2>{{ 'mma.messages.type_' + contactType | translate }}</h2>
+                    <button ng-if="contactType === searchType" class="button button-clear mma-messages-clear-search" ng-click="clearSearch()" aria-label="{{ 'mm.core.clearsearch' | translate }}">
+                        <i class="icon ion-close-round"></i>
+                    </button>
+                </ion-item>
+
+                <a ng-repeat="contact in contacts[contactType] | orderBy:'fullname' track by $index" ng-if="contact.profileimageurl || contact.profileimageurlsmall" class="item item-avatar" mm-split-view-link="site.messages-discussion({userId: contact.id})" title="{{contact.fullname}}"> <!-- Don't show deleted users -->
+                    <img ng-src="{{ contact.profileimageurl || contact.profileimageurlsmall }}" alt="{{ 'mm.core.pictureof' | translate:{$a: contact.fullname} }}" role="presentation" mm-external-content >
+                    <p class="item-heading">{{ contact.fullname }}</p>
+                </a>
+            </li>
+        </ul>
+
+        <mm-empty-box ng-if="!hasContacts && !contacts[searchType]" icon="ion-person-stalker" message="{{ 'mma.messages.contactlistempty' | translate}}"></mm-empty-box>
+        <mm-empty-box ng-if="!hasContacts && contacts[searchType]" icon="ion-person-stalker" message="{{ 'mma.messages.nousersfound' | translate}}"></mm-empty-box>
+    </mm-loading>
+</ion-content>

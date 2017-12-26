@@ -1,0 +1,45 @@
+<ion-view view-title="{{ 'mm.settings.settings' | translate }}">
+    <ion-nav-buttons side="secondary">
+        <!-- Add an empty context menu so the right view menu is shown in tablet (split view). -->
+        <mm-context-menu></mm-context-menu>
+    </ion-nav-buttons>
+    <mm-split-view component="mmCoreSettingsIndex">
+        <ion-content mm-state-class>
+            <ul class="list">
+                <li>
+                    <a class="item" mm-split-view-link="site.mm_settings-general" title="{{ 'mm.settings.general' | translate }}">
+                        {{ 'mm.settings.general' | translate }}
+                    </a>
+                </li>
+                <li>
+                    <a class="item" mm-split-view-link="site.mm_settings-spaceusage" title="{{ 'mm.settings.spaceusage' | translate }}">
+                        {{ 'mm.settings.spaceusage' | translate }}
+                    </a>
+                </li>
+                <li>
+                    <a class="item" mm-split-view-link="site.mm_settings-synchronization" title="{{ 'mm.settings.synchronization' | translate }}">
+                        {{ 'mm.settings.synchronization' | translate }}
+                    </a>
+                </li>
+                <li>
+                    <a class="item" ng-if="isIOS" mm-split-view-link="site.sharedfiles-list({manage: true})" title="{{ 'mm.sharedfiles.sharedfiles' | translate }}">
+                        {{ 'mm.sharedfiles.sharedfiles' | translate }}
+                    </a>
+                </li>
+                <li class="item text-center" ng-if="(!handlers || !handlers.length) && !areHandlersLoaded()">
+                    <ion-spinner></ion-spinner>
+                </li>
+                <li ng-repeat="handler in handlers | orderBy:'-priority'" ng-controller="handler.controller" class="mm-settings-handler {{class}}">
+                    <a class="item" mm-split-view-link="{{state}}" title="{{ title | translate }}">
+                        {{ title | translate }}
+                    </a>
+                </li>
+                <li>
+                    <a class="item" mm-split-view-link="site.mm_settings-about" title="{{ 'mm.settings.about' | translate }}">
+                        {{ 'mm.settings.about' | translate }}
+                    </a>
+                </li>
+            </ul>
+        </ion-content>
+    </mm-split-view>
+</ion-view>

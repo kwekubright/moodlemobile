@@ -1,0 +1,20 @@
+<ion-view view-title="{{ 'mm.settings.language' | translate }}" >
+    <ion-content mm-state-class>
+        <ul class="list">
+            <li class="item item-input item-select">
+                <div class="input-label" id="mm-settings-languagelabel">
+                    {{ 'mm.settings.language' | translate }}
+                </div>
+                <select ng-model="selectedLanguage" ng-options="code as name for (code, name) in langs" ng-change="languageChanged(selectedLanguage)" aria-labelledby="mm-settings-languagelabel" mm-ios-select-fix>
+                </select>
+            </li>
+            <ion-toggle ng-if="rteSupported" ng-model="richTextEditor" ng-change="richTextEditorChanged(richTextEditor)">
+                <p class="item-heading">{{ 'mm.settings.enablerichtexteditor' | translate }}</p>
+                <p>{{ 'mm.settings.enablerichtexteditordescription' | translate }}</p>
+            </ion-toggle>
+            <ion-toggle ng-if="showReport" ng-model="reportInBackground" ng-change="reportChanged(reportInBackground)">
+                <p class="item-heading">{{ 'mm.settings.reportinbackground' | translate }}</p>
+            </ion-toggle>
+        </ul>
+    </ion-content>
+</ion-view>

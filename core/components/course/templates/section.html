@@ -1,0 +1,30 @@
+<ion-view>
+    <ion-nav-title><mm-format-text watch="true">{{ title }}</mm-format-text></ion-nav-title>
+    <ion-content delegate-handle="mmSectionScroll" mm-state-class>
+        <ion-refresher pulling-text="{{ 'mm.core.pulltorefresh' | translate }}" ng-if="sectionLoaded" on-refresh="doRefresh()">
+        </ion-refresher>
+        <mm-loading hide-until="sectionLoaded">
+
+            <section class="card" ng-if="summary">
+                <!-- Only displayed when 1 section per page. -->
+                <div class="item item-text-wrap clearfix">
+                    <article><mm-format-text>{{ summary }}</mm-format-text></article>
+                </div>
+            </section>
+
+            <section ng-class="{'card': allSections}" ng-repeat="section in sections" ng-if="sectionHasContent(section)">
+                <!-- Title and summary are displayed when multiple sections per page. -->
+                <div class="item item-divider" ng-if="allSections && section.name">
+                    <h2><mm-format-text watch="true">{{ section.name }}</mm-format-text></h2>
+                </div>
+
+                <div class="item item-text-wrap clearfix" ng-if="allSections && section.summary">
+                    <mm-format-text>{{ section.summary }}</mm-format-text>
+                </div>
+
+                <mm-course-module ng-if="module.visibleoncoursepage !== 0" class="item item-complex" ng-repeat="module in section.modules" module="module" completion-changed="completionChanged"></mm-course-module>
+            </section>
+            <mm-empty-box ng-if="!hasContent" icon="ion-qr-scanner" message="{{ 'mm.course.nocontentavailable' | translate }}"></mm-empty-box>
+        </mm-loading>
+    </ion-content>
+</ion-view>

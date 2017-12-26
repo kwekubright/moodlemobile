@@ -1,0 +1,24 @@
+<ion-view view-title="{{ 'mm.settings.synchronization' | translate }}" >
+    <ion-content mm-state-class>
+        <ul class="list">
+            <li class="item item-divider">
+                <p>{{ 'mm.settings.syncsettings' | translate }}</p>
+            </li>
+            <ion-toggle ng-model="syncOnlyOnWifi" ng-change="syncWifiChanged(syncOnlyOnWifi)">
+                <p class="item-heading">{{ 'mm.settings.enablesyncwifi' | translate }}</p>
+            </ion-toggle>
+            <li class="item item-divider">
+                <p>{{ 'mm.settings.sites' | translate }}</p>
+            </li>
+            <li ng-repeat="site in sites" class="item item-button-right" ng-class="{'mm-info-item': site.id == currentSiteId}">
+                <p class="item-heading"><mm-format-text>{{site.sitename}}</mm-format-text></p>
+                <p>{{site.fullname}}</p>
+                <p>{{site.siteurl}}</p>
+                <button ng-if="!site.synchronizing" class="button button-icon" ng-click="synchronize(site.id)" title="{{site.sitename}}" aria-label="{{ 'mm.settings.synchronizenow' | translate }}">
+                    <i class="icon ion-android-sync positive"></i>
+                </button>
+                <ion-spinner ng-if="site.synchronizing"></ion-spinner>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

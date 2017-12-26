@@ -1,0 +1,22 @@
+<ion-view view-title="{{ 'mm.courses.mycourses' | translate }}">
+    <ion-nav-buttons side="secondary">
+        <a ui-sref="site.mm_searchcourses" ng-if="searchEnabled" class="button button-icon ion-ios-search-strong"></a>
+    </ion-nav-buttons>
+    <ion-content padding="true" mm-state-class>
+        <!-- ion-refresher needs to be direct child of ion-content to work with native scrolling -->
+        <ion-refresher pulling-text="{{ 'mm.core.pulltorefresh' | translate }}" ng-if="coursesLoaded" on-refresh="refreshCourses()">
+        </ion-refresher>
+        <mm-loading hide-until="coursesLoaded">
+            <div ng-if="courses && courses.length > 5" class="item item-transparent item-input-inset">
+                <ion-input class="item-input-wrapper">
+                    <i class="icon ion-funnel placeholder-icon"></i>
+                    <input type="text" placeholder="{{ 'mm.courses.filtermycourses' | translate}}" ng-model="filter.filterText">
+                </ion-input>
+            </div>
+            <mm-course-list-progress ng-repeat="course in courses | filter:{fullname: filter.filterText}" course="course" show-summary="true"></mm-course-list-progress>
+            <mm-empty-box ng-if="!courses || !courses.length" icon="ion-ionic" message="{{ 'mm.courses.nocourses' | translate }}">
+                <p ng-if="searchEnabled">{{ 'mm.courses.searchcoursesadvice' | translate }}</p>
+            </mm-empty-box>
+        </mm-loading>
+    </ion-content>
+</ion-view>
